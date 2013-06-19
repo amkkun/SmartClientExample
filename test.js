@@ -44,11 +44,11 @@ isc.RefreshPanel.create({
 	ID: "userPanel",
 	width: 400, height: 500,
     dataFormat:"json",
-    dataURL:"/rest/user.js",
+    dataURL:"/rest/getUsers",
     fields:[
-		{ name: "id", title: "ID" },
-		{ name: "name", title: "Name" },
-		{ name: "username", title: "UserName" }
+		{ name: "userId", title: "ID" },
+		{ name: "userName", title: "Name" },
+		{ name: "userUserName", title: "UserName" }
 	]
 })
 
@@ -56,10 +56,10 @@ isc.RefreshPanel.create({
 	ID: "groupPanel",
 	width: 400, height: 500,
 	dataFormat: "json",
-	dataURL: "/rest/group.js",
+	dataURL: "/rest/getGroups",
 	fields: [
-		{ name: "id", title: "ID" },
-		{ name: "name", title: "Name" }
+		{ name: "groupId", title: "ID" },
+		{ name: "groupName", title: "Name" }
 	]
 })
 
