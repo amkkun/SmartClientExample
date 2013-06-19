@@ -23,5 +23,5 @@ groupRef = unsafePerformIO $ newIORef
 getGroups :: IO [Group]
 getGroups = readIORef groupRef
 
-putGroup :: Group -> IO ()
-putGroup group = modifyIORef groupRef (++ [group])
+addGroup :: Group -> IO ()
+addGroup group = modifyIORef groupRef (++ [group])

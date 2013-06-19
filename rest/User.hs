@@ -25,5 +25,5 @@ userRef = unsafePerformIO $ newIORef
 getUsers :: IO [User]
 getUsers = readIORef userRef
 
-putUser :: User -> IO ()
-putUser user = modifyIORef userRef (++ [user])
+addUser :: User -> IO ()
+addUser user = modifyIORef userRef (++ [user])
