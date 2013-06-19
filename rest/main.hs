@@ -12,12 +12,17 @@ main = scotty 3000 $ do
     users <- liftIO getUsers
     json users
   post "/addUser" $ do
-    user <- jsonData
-    liftIO $ addUser user
+    uId <- param "userId"
+    uName <- param "userName"
+    uUserName <- param "userUserName"
+    liftIO $ addUser $ User uId uName uUserName
+    text "ok"
   get "/getGroups" $ do
     groups <- liftIO getGroups
     json groups
   post "/addGroup" $ do
-    group <- jsonData
-    liftIO $ addGroup group
+    gId <- param "groupId"
+    gName <- param "groupName"
+    liftIO $ addGroup $ Group gId gName
+    text "ok"
   get "/" $ text "hello"
