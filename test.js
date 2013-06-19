@@ -13,7 +13,6 @@ isc.AddForm.addProperties({
 			dataURL: "/rest/add" + me.modelName,
 			dataFormat: "json",
 			dataProtocol: "postParams",
-			fields: me.fields,
 			transformResponce: function(_, _, _) {
 			}
 		});
