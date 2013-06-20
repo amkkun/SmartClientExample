@@ -17,6 +17,10 @@ main = scotty 3000 $ do
     uUserName <- param "userUserName"
     liftIO $ addUser $ User uId uName uUserName
     text "ok"
+  post "/addUserJSON" $ do
+    user <- jsonData
+    liftIO $ addUser user
+    text "ok"
   get "/getGroups" $ do
     groups <- liftIO getGroups
     json groups

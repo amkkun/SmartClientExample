@@ -1,5 +1,5 @@
 var user =  [
-	{ name: "userId", title: "ID", type: "text" },
+	{ name: "userId", title: "ID", type: "integer" },
 	{ name: "userName", title: "Name", type: "text" },
 	{ name: "userUserName", title: "UserName", type: "text" }
 ];
@@ -24,16 +24,34 @@ var addUser = function(user) {
 	})
 };
 
+var addUserJSON = function(user) {
+	var encoded = isc.JSON.encode(user);
+	RPCManager.sendRequest({
+		httpMethod: "POST",
+		contentType: "application/json",
+		httpHeaders: {
+			"Accept": "application/json",
+		},
+		actionURL: "/rest/addUserJSON",
+		data: encoded,
+		paramsOnly: true,
+	})
+};
+
 isc.ListGrid.create({
 	ID: "userList",
 	width: 500, height: 400,
+	fields: user,
 	refresh: function() {
 		var me = this;
 		getUsers(function(rpcResponce, data, rpcRequest) {
 			me.setData(data);
 		});
 	},
-	fields: user
+	initWidget: function() {
+		this.Super("initWidget", arguments);
+		this.refresh();
+	}
 })
 
 isc.Window.create({
@@ -48,9 +66,13 @@ isc.Window.create({
 			ID: "userForm",
 			autoDraw: false,
 			send: function() {
-				var user = this.getValues();
-				console.log(user);
-				addUser(user);
+				var user = this.getValidatedValues();
+				if (user) {
+					addUserJSON(user);
+					return true;
+				} else {
+					return false;
+				}
 			},
 			fields: user
 		}),
@@ -58,10 +80,11 @@ isc.Window.create({
 			ID: "sendButton",
 			title: "send",
 			click: function() {
-				userForm.send();
-				formWindow.hide();
-				userForm.reset();
-				userList.refresh();
+				if (userForm.send()) {
+					formWindow.hide();
+					userForm.reset();
+					userList.refresh();
+				}
 			}
 		})
 	]
