@@ -1,4 +1,0 @@
-[localhost www.example.com]
-
-/rest/ >> localhost:3000/
-/      -> /home/amkkun/Workspace/SmartClient/SmartClientExample/
