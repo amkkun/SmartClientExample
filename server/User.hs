@@ -27,3 +27,11 @@ getUsers = readIORef userRef
 
 addUser :: User -> IO ()
 addUser user = modifyIORef userRef (++ [user])
+
+updateUser :: User -> IO ()
+updateUser user = modifyIORef userRef (searchUpdate user)
+ where
+  searchUpdate u = map (up u)
+  up u1 u2
+    | userId u1 == userId u2 = u1
+    | otherwise = u2

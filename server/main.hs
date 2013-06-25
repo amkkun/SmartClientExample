@@ -21,6 +21,10 @@ main = scotty 3000 $ do
     user <- jsonData
     liftIO $ addUser user
     text "ok"
+  post "/updateUser" $ do
+    user <- jsonData
+    liftIO $ updateUser user
+    text "ok"
   get "/getGroups" $ do
     groups <- liftIO getGroups
     json groups
