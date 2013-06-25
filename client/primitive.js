@@ -52,6 +52,15 @@ var updateUser = function(user) {
 	})
 };
 
+var deleteUser = function(userId) {
+	RPCManager.sendRequest({
+		httpMethod: "POST",
+		actionURL: "/rest/deleteUser",
+		params: { userId: userId },
+		paramsOnly: true,
+	})
+};
+
 var filterProperty = function(fields, data) {
 	var filtered = {};
 	fields.map(function(field) {
@@ -59,6 +68,33 @@ var filterProperty = function(fields, data) {
 	});
 	return filtered;
 };
+
+isc.HLayout.create({
+	ID: "buttons",
+	membersMargin: 10,
+	members: [
+		isc.IButton.create({
+			title: "refresh",
+			click: function() {
+				userList.refresh();
+			}
+		}),
+		isc.IButton.create({
+			title: "add user",
+			click: function() {
+				formWindow.show();
+			}
+		}),
+		isc.IButton.create({
+			ID: "deleteButton",
+			title: "delete user",
+			disabled: true,
+			click: function() {
+				userList.delete();
+			},
+		})
+	]
+})
 
 isc.ListGrid.create({
 	ID: "userList",
@@ -75,12 +111,21 @@ isc.ListGrid.create({
 		this.refresh();
 	},
 	canEdit: true,
-	editEvent: "click",
+	editEvent: "doubleClick",
 	editComplete: function(rowNum, colNum, newValues, oldValues, editCompletionEvent) {
 		var me = this;
 		var record = me.getEditedRecord(rowNum);
 		var user = filterProperty(me.fields, record);
 		updateUser(user);
+		me.refresh();
+	},
+	selectionChanged: function(record, state) {
+		deleteButton.setEnabled(state);
+	},
+	delete: function() {
+		var me = this;
+		var record = me.getSelectedRecord();
+		deleteUser(record.userId);
 		me.refresh();
 	}
 })
@@ -116,25 +161,6 @@ isc.Window.create({
 					userForm.reset();
 					userList.refresh();
 				}
-			}
-		})
-	]
-})
-
-isc.HLayout.create({
-	ID: "buttons",
-	membersMargin: 10,
-	members: [
-		isc.IButton.create({
-			title: "refresh",
-			click: function() {
-				userList.refresh();
-			}
-		}),
-		isc.IButton.create({
-			title: "add user",
-			click: function() {
-				formWindow.show();
 			}
 		})
 	]
