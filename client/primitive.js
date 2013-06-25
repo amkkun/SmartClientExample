@@ -38,6 +38,28 @@ var addUserJSON = function(user) {
 	})
 };
 
+var updateUser = function(user) {
+	var encoded = isc.JSON.encode(user);
+	RPCManager.sendRequest({
+		httpMethod: "POST",
+		contentType: "application/json",
+		httpHeaders: {
+			"Accept": "application/json",
+		},
+		actionURL: "/rest/updateUser",
+		data: encoded,
+		paramsOnly: true,
+	})
+};
+
+var filterProperty = function(fields, data) {
+	var filtered = {};
+	fields.map(function(field) {
+		filtered[field.name] = data[field.name];
+	});
+	return filtered;
+};
+
 isc.ListGrid.create({
 	ID: "userList",
 	width: 500, height: 400,
@@ -51,6 +73,15 @@ isc.ListGrid.create({
 	initWidget: function() {
 		this.Super("initWidget", arguments);
 		this.refresh();
+	},
+	canEdit: true,
+	editEvent: "click",
+	editComplete: function(rowNum, colNum, newValues, oldValues, editCompletionEvent) {
+		var me = this;
+		var record = me.getEditedRecord(rowNum);
+		var user = filterProperty(me.fields, record);
+		updateUser(user);
+		me.refresh();
 	}
 })
 
