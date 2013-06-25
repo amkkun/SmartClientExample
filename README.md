@@ -2,8 +2,8 @@ SmartClientExample
 ==================
 
 ```
+$ git clone git://github.com/amkkun/SmartClientExample.git
 $ cd SmartClientExample/server
-$ cabal-dev install
 $ emacs mighty.route # for your environment
 $ ./startup.sh
 ```
