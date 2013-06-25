@@ -35,3 +35,8 @@ updateUser user = modifyIORef userRef (searchUpdate user)
   up u1 u2
     | userId u1 == userId u2 = u1
     | otherwise = u2
+
+deleteUser :: Int -> IO ()
+deleteUser id' = modifyIORef userRef (del id')
+ where
+  del i = filter (\u -> userId u /= i)

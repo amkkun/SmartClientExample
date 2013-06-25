@@ -25,6 +25,10 @@ main = scotty 3000 $ do
     user <- jsonData
     liftIO $ updateUser user
     text "ok"
+  post "/deleteUser" $ do
+    i <- param "userId"
+    liftIO $ deleteUser i
+    text "ok"
   get "/getGroups" $ do
     groups <- liftIO getGroups
     json groups
