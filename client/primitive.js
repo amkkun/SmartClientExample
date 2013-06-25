@@ -1,5 +1,5 @@
 var user =  [
-	{ name: "userId", title: "ID", type: "integer" },
+	{ name: "userId", title: "ID", type: "integer", align: "left" },
 	{ name: "userName", title: "Name", type: "text" },
 	{ name: "userUserName", title: "UserName", type: "text" }
 ];
@@ -86,6 +86,15 @@ isc.HLayout.create({
 			}
 		}),
 		isc.IButton.create({
+			ID: "updateButton",
+			title: "update user",
+			disabled: true,
+			click: function() {
+				updateForm.setData();
+				updateWindow.show();
+			}
+		}),
+		isc.IButton.create({
 			ID: "deleteButton",
 			title: "delete user",
 			disabled: true,
@@ -151,6 +160,7 @@ isc.ListGrid.create({
 	},
 	selectionChanged: function(record, state) {
 		deleteButton.setEnabled(state);
+		updateButton.setEnabled(state);
 	},
 	delete: function() {
 		var me = this;
@@ -158,6 +168,49 @@ isc.ListGrid.create({
 		deleteUser(record.userId);
 		me.refresh();
 	}
+})
+
+isc.Window.create({
+	ID: "updateWindow",
+	title: "update",
+	width: 400, height: 300,
+	autoDraw: false,
+	autoCenter: true,
+	isModal: true,
+	showModalMask: true,
+	items: [
+		isc.DynamicForm.create({
+			ID: "updateForm",
+			autoDraw: false,
+			setData: function() {
+				var me = this;
+				var record = userList.getSelectedRecord();
+				var user = filterProperty(me.fields, record);
+				me.setValues(user);
+			},
+			send: function() {
+				var user = this.getValidatedValues();
+				if (user) {
+					updateUser(user);
+					return true;
+				} else {
+					return false;
+				}
+			},
+			fields: user,
+		}),
+		isc.IButton.create({
+			ID: "updateSendButton",
+			title: "send",
+			click: function() {
+				if (updateForm.send()) {
+					updateWindow.hide();
+					updateForm.reset();
+					userList.refresh();
+				}
+			}
+		})
+	]
 })
 
 isc.Window.create({
