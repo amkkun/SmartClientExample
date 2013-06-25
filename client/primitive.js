@@ -135,6 +135,34 @@ isc.Window.create({
 	]
 })
 
+isc.Menu.create({
+	ID: "contextMenu",
+	width: 150,
+	data: [{
+		title: "add",
+		click: function() {
+			formWindow.show();
+		}
+	}, {
+		title: "update",
+		enableIf: function() {
+			return userList.getSelectedRecord() != null;
+		},
+		click: function() {
+			updateForm.setData();
+			updateWindow.show();
+		}
+	}, {
+		title: "delete",
+		enableIf: function() {
+			return userList.getSelectedRecord() != null;
+		},
+		click: function() {
+			confirmDelete.show();
+		}
+	}]
+})
+
 isc.ListGrid.create({
 	ID: "userList",
 	width: 500, height: 400,
@@ -167,7 +195,8 @@ isc.ListGrid.create({
 		var record = me.getSelectedRecord();
 		deleteUser(record.userId);
 		me.refresh();
-	}
+	},
+	contextMenu: contextMenu
 })
 
 isc.Window.create({
