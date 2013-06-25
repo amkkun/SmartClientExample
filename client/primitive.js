@@ -90,8 +90,38 @@ isc.HLayout.create({
 			title: "delete user",
 			disabled: true,
 			click: function() {
-				userList.delete();
+				confirmDelete.show();
 			},
+		})
+	]
+})
+
+isc.Window.create({
+	ID: "confirmDelete",
+	title: "delete?",
+	autoSize: true,
+	isModal: true,
+	autoCenter: true,
+	showModalMask: true,
+	autoDraw: false,
+	items: [
+		isc.HLayout.create({
+			membersMargin: 10,
+			members: [
+				isc.IButton.create({
+					title: "OK",
+					click: function() {
+						userList.delete();
+						confirmDelete.hide();
+					}
+				}),
+				isc.IButton.create({
+					title: "Cancel",
+					click: function() {
+						confirmDelete.hide();
+					}
+				})
+			]
 		})
 	]
 })
