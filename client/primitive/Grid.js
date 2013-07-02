@@ -15,7 +15,7 @@ define([
 			Buttons.deleteButton.setEnabled(state);
 		},
 		refresh: function() {
-			Api.getUsers(function(rpcResponce, data, rpcRequest) {
+			Api.getUsers(function(data) {
 				userGrid.setData(data);
 			});
 		},
@@ -26,6 +26,20 @@ define([
 			this.refresh();
 		}
 	});
+
+	Buttons.refreshButton.click = function() {
+		console.log(this);
+		console.log(arguments);
+		userGrid.refresh();
+	};
+
+	ContextMenu.updateMenu.enableIf = function() {
+		return userGrid.getSelectedRecord() != null;
+	};
+
+	ContextMenu.deleteMenu.enableIf = function() {
+		return userGrid.getSelectedRecord() != null;
+	};
 
 	return {
 		userGrid: userGrid,

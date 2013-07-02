@@ -3,8 +3,10 @@ define([
 	"Util",
 	"Grid",
 	"Api",
-	"Model"
-], function(Util, Grid, Api, Model) {
+	"Model",
+	"Buttons",
+	"ContextMenu"
+], function(Util, Grid, Api, Model, Buttons, ContextMenu) {
 
 	// addUser
 	var addForm = isc.DynamicForm.create({
@@ -37,15 +39,24 @@ define([
 		]
 	});
 
+	Buttons.addButton.click = function() {
+		addWindow.show();
+	};
+
+	ContextMenu.addMenu.click = function() {
+		addWindow.show();
+	};
+
 	// updateUser
 	var updateForm = isc.DynamicForm.create({
 		autoDraw: false,
 		setData: function() {
 			var me = this;
-			var record = userList.getSelectedRecord();
+			var record = Grid.userGrid.getSelectedRecord();
 			var user = Util.filterProperty(me.fields, record);
 			me.setValues(user);
 		},
+		fields: Model.user
 	});
 
 	var updateButton = isc.IButton.create({
@@ -73,6 +84,16 @@ define([
 			updateButton
 		]
 	});
+
+	Buttons.updateButton.click = function() {
+		updateForm.setData();
+		updateWindow.show();
+	};
+
+	ContextMenu.updateMenu.click = function() {
+		updateForm.setData();
+		updateWindow.show();
+	};
 
 	// deleteUser
 	var deleteOKButton = isc.IButton.create({
@@ -109,6 +130,14 @@ define([
 			deleteButtons
 		]
 	});
+
+	Buttons.deleteButton.click = function() {
+		deleteWindow.show();
+	};
+
+	ContextMenu.deleteMenu.click = function() {
+		deleteWindow.show();
+	};
 
 	return {
 		addWindow: addWindow,

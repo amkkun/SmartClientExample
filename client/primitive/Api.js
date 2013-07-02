@@ -1,62 +1,52 @@
 'use strict';
 define([
-], function() {
+	"jquery"
+], function($) {
 
 	var getUsers = function(callback) {
-		RPCManager.sendRequest({
-			httpMethod: "GET",
-			actionURL: "/rest/getUsers",
-			callback: callback,
-			paramsOnly: true,
-			evalResult: true
-		})
+		$.ajax({
+			type: "GET",
+			url: "/rest/getUsers",
+			success: function(data) {
+				callback(data);
+			}
+		});
 	};
 
 	var addUser = function(user) {
-		RPCManager.sendRequest({
-			httpMethod: "POST",
-			actionURL: "/rest/addUser",
-			params: user,
-			paramsOnly: true,
-			evalResult: true
-		})
+		$.ajax({
+			type: "POST",
+			url: "/rest/addUser",
+			data: user,
+		});
 	};
 
 	var addUserJSON = function(user) {
-		var encoded = isc.JSON.encode(user);
-		RPCManager.sendRequest({
-			httpMethod: "POST",
-			contentType: "application/json",
-			httpHeaders: {
-				"Accept": "application/json",
-			},
-			actionURL: "/rest/addUserJSON",
-			data: encoded,
-			paramsOnly: true,
-		})
+		$.ajax({
+			type: "POST",
+			url: "/rest/addUserJSON",
+			data: JSON.stringify(user),
+			dataType: "json",
+			contentType: "application/json; charset=utf-8"
+		});
 	};
 
 	var updateUser = function(user) {
-		var encoded = isc.JSON.encode(user);
-		RPCManager.sendRequest({
-			httpMethod: "POST",
-			contentType: "application/json",
-			httpHeaders: {
-				"Accept": "application/json",
-			},
-			actionURL: "/rest/updateUser",
-			data: encoded,
-			paramsOnly: true,
-		})
+		$.ajax({
+			type: "POST",
+			url: "/rest/updateUser",
+			data: JSON.stringify(user),
+			dataType: "json",
+			contentType: "application/json; charset=utf-8"
+		});
 	};
 
 	var deleteUser = function(userId) {
-		RPCManager.sendRequest({
-			httpMethod: "POST",
-			actionURL: "/rest/deleteUser",
-			params: { userId: userId },
-			paramsOnly: true,
-		})
+		$.ajax({
+			type: "POST",
+			url: "/rest/deleteUser",
+			data: { userId: userId },
+		});
 	};
 
 	return {

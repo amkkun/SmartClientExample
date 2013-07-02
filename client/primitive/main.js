@@ -1,7 +1,8 @@
 'use strict';
 require([
 	"Buttons",
-	"Grid"
+	"Grid",
+	"Windows"
 ], function(Buttons, Grid) {
 
 	var buttons = isc.HLayout.create({
