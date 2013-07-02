@@ -1,3 +1,4 @@
+'use strict';
 define([], function() {
 
 	var filterProperty = function(fields, data) {
