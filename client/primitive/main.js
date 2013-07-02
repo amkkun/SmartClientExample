@@ -1,0 +1,4 @@
+require([
+	"primitive-main"
+], function() {
+});
